@@ -2300,3 +2300,18 @@ button {
 .auth-link a:hover {
     color: var(--color-green) !important;
 }
+
+.candidatura-link {
+    background: rgba(68, 255, 0, 0.15);
+    padding: 0.5rem 1rem !important;
+    border-radius: 6px;
+    color: var(--color-green) !important;
+    font-weight: 600 !important;
+    border: 1px solid rgba(68, 255, 0, 0.3);
+    transition: all 0.2s ease;
+}
+
+.candidatura-link:hover {
+    background: var(--color-green) !important;
+    color: var(--color-bg) !important;
+}

@@ -1,0 +1,817 @@
+/* ===== PAINEL ADMIN - RAZOR ESPORTS ===== */
+
+:root {
+    --admin-bg: #0a0a0a;
+    --admin-sidebar: #111111;
+    --admin-card: #1a1a1a;
+    --admin-border: #2a2a2a;
+    --admin-text: #ffffff;
+    --admin-text-muted: #888888;
+    --admin-green: #44ff00;
+    --admin-green-dark: #33cc00;
+    --admin-red: #ff4444;
+    --admin-yellow: #ffaa00;
+    --admin-blue: #4488ff;
+}
+
+.admin-body {
+    background: var(--admin-bg);
+    color: var(--admin-text);
+    min-height: 100vh;
+    font-family: 'Rajdhani', sans-serif;
+}
+
+/* ===== HEADER ===== */
+
+.admin-header {
+    background: var(--admin-sidebar);
+    border-bottom: 1px solid var(--admin-border);
+    padding: 1rem 2rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+}
+
+.admin-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+.admin-logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-logo img {
+    height: 40px;
+}
+
+.admin-badge-header {
+    background: var(--admin-green);
+    color: var(--admin-bg);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+}
+
+.admin-user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-user span {
+    color: var(--admin-text-muted);
+}
+
+/* ===== CONTAINER ===== */
+
+.admin-container {
+    display: flex;
+    padding-top: 72px;
+    min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+
+.admin-sidebar {
+    width: 260px;
+    background: var(--admin-sidebar);
+    border-right: 1px solid var(--admin-border);
+    position: fixed;
+    top: 72px;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    padding: 1.5rem 0;
+}
+
+.admin-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.admin-nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.5rem;
+    color: var(--admin-text-muted);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+    position: relative;
+}
+
+.admin-nav a:hover {
+    background: rgba(68, 255, 0, 0.05);
+    color: var(--admin-text);
+}
+
+.admin-nav a.active {
+    background: rgba(68, 255, 0, 0.1);
+    color: var(--admin-green);
+    border-left-color: var(--admin-green);
+}
+
+.admin-nav a svg {
+    flex-shrink: 0;
+}
+
+.nav-badge {
+    background: var(--admin-red);
+    color: white;
+    font-size: 0.7rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 10px;
+    margin-left: auto;
+}
+
+/* ===== MAIN CONTENT ===== */
+
+.admin-main {
+    flex: 1;
+    margin-left: 260px;
+    padding: 2rem;
+    max-width: calc(100% - 260px);
+}
+
+.admin-section {
+    display: none;
+}
+
+.admin-section.active {
+    display: block;
+}
+
+.admin-section h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    color: var(--admin-green);
+}
+
+/* ===== STATS GRID ===== */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: var(--admin-card);
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.stat-card.highlight {
+    border-color: var(--admin-green);
+    background: rgba(68, 255, 0, 0.05);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-icon.users {
+    background: rgba(68, 255, 0, 0.15);
+    color: var(--admin-green);
+}
+
+.stat-icon.banned {
+    background: rgba(255, 68, 68, 0.15);
+    color: var(--admin-red);
+}
+
+.stat-icon.posts {
+    background: rgba(68, 136, 255, 0.15);
+    color: var(--admin-blue);
+}
+
+.stat-icon.pending {
+    background: rgba(255, 170, 0, 0.15);
+    color: var(--admin-yellow);
+}
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-number {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.stat-label {
+    color: var(--admin-text-muted);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* ===== QUICK ACTIONS ===== */
+
+.quick-actions h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: var(--admin-text);
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.action-btn {
+    background: var(--admin-card);
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--admin-text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.action-btn:hover {
+    border-color: var(--admin-green);
+    background: rgba(68, 255, 0, 0.05);
+}
+
+.action-btn svg {
+    color: var(--admin-green);
+}
+
+/* ===== CARDS CONTAINER ===== */
+
+.cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.admin-card {
+    background: var(--admin-card);
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+/* ===== USER CARD ===== */
+
+.user-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.user-card.banned {
+    border-color: var(--admin-red);
+    background: rgba(255, 68, 68, 0.05);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-avatar img,
+.avatar-placeholder {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    background: var(--admin-green);
+    color: var(--admin-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.user-details h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.user-details .username {
+    color: var(--admin-text-muted);
+    font-size: 0.875rem;
+    margin: 0.125rem 0;
+}
+
+.user-meta {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0.25rem 0;
+}
+
+.badge {
+    padding: 0.125rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.admin-badge {
+    background: var(--admin-green);
+    color: var(--admin-bg);
+}
+
+.banned-badge {
+    background: var(--admin-red);
+    color: white;
+}
+
+.user-date {
+    color: var(--admin-text-muted);
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+.ban-reason {
+    color: var(--admin-red);
+    font-size: 0.8rem;
+    margin: 0.25rem 0 0;
+}
+
+.user-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* ===== POST CARD ===== */
+
+.post-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.author-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.author-name {
+    font-weight: 600;
+    display: block;
+}
+
+.post-date {
+    color: var(--admin-text-muted);
+    font-size: 0.8rem;
+}
+
+.post-content p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.post-image {
+    max-width: 300px;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+}
+
+.post-actions {
+    display: flex;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--admin-border);
+}
+
+/* ===== CANDIDATURA CARD ===== */
+
+.candidatura-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.candidatura-card.aprovado {
+    border-color: var(--admin-green);
+}
+
+.candidatura-card.rejeitado {
+    border-color: var(--admin-red);
+    opacity: 0.7;
+}
+
+.candidatura-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.candidatura-info h3 {
+    margin: 0 0 0.25rem;
+}
+
+.discord-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #5865F2;
+    margin: 0;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.status-pendente {
+    background: rgba(255, 170, 0, 0.2);
+    color: var(--admin-yellow);
+}
+
+.status-aprovado {
+    background: rgba(68, 255, 0, 0.2);
+    color: var(--admin-green);
+}
+
+.status-rejeitado {
+    background: rgba(255, 68, 68, 0.2);
+    color: var(--admin-red);
+}
+
+.candidatura-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 0.75rem;
+}
+
+.info-row {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.75rem;
+    border-radius: 8px;
+}
+
+.info-row strong {
+    color: var(--admin-green);
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.8rem;
+}
+
+.admin-notes {
+    grid-column: 1 / -1;
+    background: rgba(68, 255, 0, 0.05);
+    border: 1px solid rgba(68, 255, 0, 0.2);
+}
+
+.candidatura-actions {
+    display: flex;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--admin-border);
+}
+
+/* ===== FILTER TABS ===== */
+
+.filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.filter-tab {
+    background: var(--admin-card);
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    color: var(--admin-text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-tab:hover {
+    border-color: var(--admin-green);
+    color: var(--admin-text);
+}
+
+.filter-tab.active {
+    background: var(--admin-green);
+    border-color: var(--admin-green);
+    color: var(--admin-bg);
+}
+
+/* ===== FORM ===== */
+
+.form-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.admin-form {
+    background: var(--admin-card);
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--admin-text);
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    background: var(--admin-bg);
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    color: var(--admin-text);
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--admin-green);
+}
+
+.password-input {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.password-input input {
+    flex: 1;
+}
+
+.info-box {
+    background: var(--admin-card);
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.info-box h3 {
+    margin-top: 0;
+    color: var(--admin-green);
+}
+
+.info-box ol {
+    padding-left: 1.25rem;
+    line-height: 2;
+    color: var(--admin-text-muted);
+}
+
+/* ===== LOGS ===== */
+
+.logs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.log-entry {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: var(--admin-card);
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.log-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.log-icon.ban_user,
+.log-icon.delete_post,
+.log-icon.reject_application {
+    background: rgba(255, 68, 68, 0.15);
+    color: var(--admin-red);
+}
+
+.log-icon.unban_user,
+.log-icon.approve_application {
+    background: rgba(68, 255, 0, 0.15);
+    color: var(--admin-green);
+}
+
+.log-icon.make_admin {
+    background: rgba(68, 136, 255, 0.15);
+    color: var(--admin-blue);
+}
+
+.log-content p {
+    margin: 0;
+}
+
+.log-detail {
+    color: var(--admin-text-muted);
+    font-size: 0.875rem;
+    margin-top: 0.25rem !important;
+}
+
+.log-date {
+    color: var(--admin-text-muted);
+    font-size: 0.75rem;
+}
+
+/* ===== BUTTONS ===== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    font-family: inherit;
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.btn-primary {
+    background: var(--admin-green);
+    color: var(--admin-bg);
+}
+
+.btn-primary:hover {
+    background: var(--admin-green-dark);
+}
+
+.btn-danger {
+    background: var(--admin-red);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #cc3333;
+}
+
+.btn-success {
+    background: var(--admin-green);
+    color: var(--admin-bg);
+}
+
+.btn-success:hover {
+    background: var(--admin-green-dark);
+}
+
+.btn-warning {
+    background: var(--admin-yellow);
+    color: var(--admin-bg);
+}
+
+.btn-warning:hover {
+    background: #cc8800;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--admin-border);
+    color: var(--admin-text);
+}
+
+.btn-outline:hover {
+    border-color: var(--admin-green);
+    color: var(--admin-green);
+}
+
+/* ===== UTILITIES ===== */
+
+.loading {
+    color: var(--admin-text-muted);
+    text-align: center;
+    padding: 2rem;
+}
+
+.empty-state {
+    color: var(--admin-text-muted);
+    text-align: center;
+    padding: 3rem;
+    background: var(--admin-card);
+    border: 1px dashed var(--admin-border);
+    border-radius: 12px;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 1024px) {
+    .admin-sidebar {
+        width: 200px;
+    }
+    
+    .admin-main {
+        margin-left: 200px;
+        max-width: calc(100% - 200px);
+    }
+    
+    .form-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-sidebar {
+        display: none;
+    }
+    
+    .admin-main {
+        margin-left: 0;
+        max-width: 100%;
+        padding: 1rem;
+    }
+    
+    .admin-header-content {
+        padding: 0 1rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .user-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .candidatura-actions {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidatura - RAZOR Esports</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        .candidatura-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #0a0a0a 0%, #111111 100%);
+        }
+        
+        .candidatura-form {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .candidatura-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .candidatura-header img {
+            height: 60px;
+            margin-bottom: 1rem;
+        }
+        
+        .candidatura-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #44ff00;
+            font-size: 1.5rem;
+            margin: 0 0 0.5rem;
+        }
+        
+        .candidatura-header p {
+            color: #888;
+            margin: 0;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #fff;
+            font-weight: 600;
+        }
+        
+        .form-group label span {
+            color: #ff4444;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: #0a0a0a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.2s ease;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #44ff00;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #44ff00;
+            color: #0a0a0a;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+        }
+        
+        .submit-btn:hover {
+            background: #33cc00;
+            transform: translateY(-2px);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .info-text {
+            background: rgba(68, 255, 0, 0.1);
+            border: 1px solid rgba(68, 255, 0, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        .info-text strong {
+            color: #44ff00;
+        }
+        
+        .success-message {
+            text-align: center;
+            padding: 3rem;
+        }
+        
+        .success-message svg {
+            color: #44ff00;
+            margin-bottom: 1rem;
+        }
+        
+        .success-message h2 {
+            color: #44ff00;
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 1rem;
+        }
+        
+        .success-message p {
+            color: #888;
+            line-height: 1.6;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: #44ff00;
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .discord-note {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #5865F2;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+        
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .candidatura-form {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="candidatura-container">
+        <div class="candidatura-form">
+            <div class="candidatura-header">
+                <a href="index.html">
+                    <img src="assets/images/logo.png" alt="RAZOR Logo">
+                </a>
+                <h1>CANDIDATURA</h1>
+                <p>Quer fazer parte da RAZOR? Preencha o formulario abaixo.</p>
+            </div>
+            
+            <div id="form-container">
+                <div class="info-text">
+                    <strong>Como funciona:</strong> Apos enviar sua candidatura, nossa equipe ira analisar seu perfil. 
+                    Se aprovado, entraremos em contato pelo Discord com suas credenciais de acesso.
+                </div>
+                
+                <form id="candidatura-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nome <span>*</span></label>
+                            <input type="text" name="nome" required placeholder="Seu nome ou gamertag">
+                        </div>
+                        <div class="form-group">
+                            <label>Idade <span>*</span></label>
+                            <input type="number" name="idade" required min="13" max="99" placeholder="Sua idade">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Usuario do Discord <span>*</span></label>
+                        <input type="text" name="discord_username" required placeholder="exemplo#1234 ou @exemplo">
+                        <p class="discord-note">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                            </svg>
+                            Certifique-se de que esta no nosso servidor Discord
+                        </p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Jogos Principais <span>*</span></label>
+                        <input type="text" name="jogos_principais" required placeholder="Ex: Valorant, CS2, League of Legends">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Experiencia em Esports</label>
+                        <textarea name="experiencia" placeholder="Conte sobre sua experiencia em jogos competitivos, times anteriores, conquistas, etc."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Por que quer fazer parte da RAZOR? <span>*</span></label>
+                        <textarea name="porque_entrar" required placeholder="Conte-nos o que te motivou a querer entrar no time e o que voce pode agregar."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" id="submit-btn">ENVIAR CANDIDATURA</button>
+                </form>
+            </div>
+            
+            <div id="success-container" style="display: none;">
+                <div class="success-message">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <h2>CANDIDATURA ENVIADA!</h2>
+                    <p>
+                        Obrigado pelo interesse em fazer parte da RAZOR!<br><br>
+                        Nossa equipe ira analisar sua candidatura e, se aprovado, 
+                        entraremos em contato pelo Discord com suas credenciais de acesso ao site.
+                    </p>
+                    <a href="index.html" class="back-link">Voltar para o site</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script>
+        document.getElementById('candidatura-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const form = e.target;
+            const submitBtn = document.getElementById('submit-btn');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'ENVIANDO...';
+            
+            const candidatura = {
+                nome: form.nome.value,
+                idade: parseInt(form.idade.value),
+                discord_username: form.discord_username.value,
+                jogos_principais: form.jogos_principais.value,
+                experiencia: form.experiencia.value || null,
+                porque_entrar: form.porque_entrar.value,
+                status: 'pendente'
+            };
+            
+            try {
+                const { error } = await supabase
+                    .from('candidaturas')
+                    .insert(candidatura);
+                
+                if (error) {
+                    throw error;
+                }
+                
+                // Mostrar mensagem de sucesso
+                document.getElementById('form-container').style.display = 'none';
+                document.getElementById('success-container').style.display = 'block';
+                
+            } catch (error) {
+                console.error('Erro ao enviar candidatura:', error);
+                alert('Erro ao enviar candidatura. Por favor, tente novamente.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'ENVIAR CANDIDATURA';
+            }
+        });
+    </script>
+</body>
+</html>
