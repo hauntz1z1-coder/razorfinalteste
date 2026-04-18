@@ -7,8 +7,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'RAZOR Esports - Time de Esports Profissional',
+  description: 'RAZOR Esports - Time profissional de esports. Acompanhe nossos jogadores, resultados e novidades da comunidade.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -35,8 +35,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="font-sans antialiased">
+    <html lang="pt-BR" className="bg-background">
+      <body className="font-sans antialiased bg-background text-foreground">
         {children}
         <Analytics />
       </body>
