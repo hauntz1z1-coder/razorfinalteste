@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed - RAZOR Team</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/feed.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/222-GKtyNvT90SRGeOg1lwQUpSvoTmtwaH.png" alt="RAZOR Logo">
+                <span class="logo-text">RAZOR TEAM</span>
+            </a>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="players.html">Players</a></li>
+                    <li><a href="feed.html" class="active">Feed</a></li>
+                    <li class="auth-link"><a href="login.html">Login</a></li>
+                    <li class="user-menu" style="display: none;">
+                        <a href="perfil.html" class="user-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <span class="user-name">Perfil</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button class="mobile-menu-btn" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Feed Section -->
+    <section class="feed-section">
+        <div class="container">
+            <div class="feed-header">
+                <div class="feed-title-area">
+                    <span class="section-tag">Comunidade</span>
+                    <h1 class="section-title">Feed Social</h1>
+                </div>
+            </div>
+            
+            <!-- Create Post Form (only visible when logged in) -->
+            <div id="create-post-area" class="create-post-area" style="display: none;">
+                <form id="create-post-form" class="create-post-form">
+                    <div class="form-header">
+                        <img id="current-user-avatar" src="https://via.placeholder.com/48" alt="Seu avatar" class="user-avatar">
+                        <div class="textarea-wrapper">
+                            <textarea id="post-content" placeholder="O que está acontecendo na comunidade RAZOR?" maxlength="500" rows="3"></textarea>
+                            <span class="char-count"><span id="char-current">0</span>/500</span>
+                        </div>
+                    </div>
+                    <div class="form-footer">
+                        <button type="submit" class="btn btn-primary btn-small" disabled>
+                            <span class="btn-text">Publicar</span>
+                            <span class="btn-loading" style="display: none;">
+                                <div class="spinner-small"></div>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Login prompt (only visible when not logged in) -->
+            <div id="login-prompt" class="login-prompt">
+                <p>Faça login para publicar e interagir com a comunidade</p>
+                <a href="login.html" class="btn btn-primary btn-small">Fazer Login</a>
+            </div>
+            
+            <!-- Feed Container -->
+            <div id="feed-container" class="feed-container">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Carregando posts...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 RAZOR Team. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/feed.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await getCurrentUser();
+            const createPostArea = document.getElementById('create-post-area');
+            const loginPrompt = document.getElementById('login-prompt');
+            
+            if (user) {
+                createPostArea.style.display = 'block';
+                loginPrompt.style.display = 'none';
+                
+                // Carregar avatar do usuário
+                const profile = await getProfile(user.id);
+                if (profile.success && profile.profile.avatar_url) {
+                    document.getElementById('current-user-avatar').src = profile.profile.avatar_url;
+                }
+            } else {
+                createPostArea.style.display = 'none';
+                loginPrompt.style.display = 'flex';
+            }
+            
+            // Carregar feed
+            loadFeed();
+            
+            // Setup realtime
+            setupRealtime();
+        });
+        
+        // Contador de caracteres
+        const postContent = document.getElementById('post-content');
+        const charCurrent = document.getElementById('char-current');
+        const submitBtn = document.querySelector('#create-post-form button[type="submit"]');
+        
+        postContent.addEventListener('input', () => {
+            const length = postContent.value.length;
+            charCurrent.textContent = length;
+            submitBtn.disabled = length === 0 || length > 500;
+        });
+        
+        // Submit post
+        document.getElementById('create-post-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const content = postContent.value.trim();
+            if (!content) return;
+            
+            const btnText = submitBtn.querySelector('.btn-text');
+            const btnLoading = submitBtn.querySelector('.btn-loading');
+            
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'inline-flex';
+            submitBtn.disabled = true;
+            
+            const result = await createPost(content);
+            
+            if (result.success) {
+                postContent.value = '';
+                charCurrent.textContent = '0';
+                loadFeed();
+            } else {
+                alert('Erro ao publicar. Tente novamente.');
+            }
+            
+            btnText.style.display = 'inline';
+            btnLoading.style.display = 'none';
+        });
+    </script>
+</body>
+</html>

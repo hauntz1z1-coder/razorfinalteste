@@ -2263,3 +2263,40 @@ button {
     opacity: 1;
     transform: translateY(0);
 }
+
+/* ===== Auth Navigation Elements ===== */
+.feed-link {
+    color: var(--color-green) !important;
+    font-weight: 600 !important;
+}
+
+.feed-link:hover {
+    color: var(--color-green-dark) !important;
+}
+
+.user-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-green) !important;
+}
+
+.user-link:hover {
+    color: var(--color-green-dark) !important;
+}
+
+.user-link svg {
+    stroke: var(--color-green);
+}
+
+.user-menu {
+    display: none;
+}
+
+.auth-link a {
+    color: var(--color-text) !important;
+}
+
+.auth-link a:hover {
+    color: var(--color-green) !important;
+}

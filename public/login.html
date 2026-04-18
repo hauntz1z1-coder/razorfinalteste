@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - RAZOR Team</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/222-GKtyNvT90SRGeOg1lwQUpSvoTmtwaH.png" alt="RAZOR Logo">
+                <span class="logo-text">RAZOR TEAM</span>
+            </a>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="players.html">Players</a></li>
+                    <li><a href="feed.html">Feed</a></li>
+                    <li><a href="login.html" class="active">Login</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button class="mobile-menu-btn" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Login Section -->
+    <section class="auth-section">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <img src="https://i.imgur.com/SmkrFYr.png" alt="RAZOR Logo" class="auth-logo">
+                    <h1 class="auth-title">Entrar</h1>
+                    <p class="auth-subtitle">Acesse sua conta RAZOR</p>
+                </div>
+                
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" name="password" required placeholder="Sua senha">
+                    </div>
+                    
+                    <div id="error-message" class="error-message" style="display: none;"></div>
+                    
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <span class="btn-text">Entrar</span>
+                        <span class="btn-loading" style="display: none;">
+                            <div class="spinner-small"></div>
+                        </span>
+                    </button>
+                </form>
+                
+                <div class="auth-footer">
+                    <p>Não tem uma conta? <a href="cadastro.html">Criar conta</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Login Form Handler
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+            const btnText = document.querySelector('.btn-text');
+            const btnLoading = document.querySelector('.btn-loading');
+            
+            // Show loading
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'inline-flex';
+            errorMessage.style.display = 'none';
+            
+            const result = await login(email, password);
+            
+            if (result.success) {
+                window.location.href = 'feed.html';
+            } else {
+                errorMessage.textContent = result.error || 'Erro ao fazer login. Verifique suas credenciais.';
+                errorMessage.style.display = 'block';
+                btnText.style.display = 'inline';
+                btnLoading.style.display = 'none';
+            }
+        });
+        
+        // Redirect if already logged in
+        (async () => {
+            const session = await checkSession();
+            if (session) {
+                window.location.href = 'feed.html';
+            }
+        })();
+    </script>
+</body>
+</html>

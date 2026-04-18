@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - RAZOR Team</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/perfil.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/222-GKtyNvT90SRGeOg1lwQUpSvoTmtwaH.png" alt="RAZOR Logo">
+                <span class="logo-text">RAZOR TEAM</span>
+            </a>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="players.html">Players</a></li>
+                    <li><a href="feed.html">Feed</a></li>
+                    <li><a href="perfil.html" class="active">Perfil</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button class="mobile-menu-btn" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Profile Section -->
+    <section class="perfil-section">
+        <div class="container">
+            <!-- Loading State -->
+            <div id="loading-state" class="loading-state">
+                <div class="spinner"></div>
+                <p>Carregando perfil...</p>
+            </div>
+            
+            <!-- Profile Content -->
+            <div id="profile-content" class="profile-content" style="display: none;">
+                <div class="profile-header-card">
+                    <div class="profile-cover">
+                        <div class="profile-avatar-wrapper">
+                            <img id="profile-avatar" src="https://via.placeholder.com/120" alt="Avatar" class="profile-avatar">
+                        </div>
+                    </div>
+                    <div class="profile-info">
+                        <h1 id="profile-nickname" class="profile-nickname">Carregando...</h1>
+                        <p id="profile-email" class="profile-email"></p>
+                        <p id="profile-bio" class="profile-bio"></p>
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <span id="posts-count" class="stat-number">0</span>
+                                <span class="stat-label">Posts</span>
+                            </div>
+                            <div class="stat-item">
+                                <span id="likes-count" class="stat-number">0</span>
+                                <span class="stat-label">Curtidas</span>
+                            </div>
+                        </div>
+                        <div class="profile-actions">
+                            <button id="edit-profile-btn" class="btn btn-secondary btn-small">Editar Perfil</button>
+                            <button id="logout-btn" class="btn btn-outline btn-small">Sair</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Edit Profile Modal -->
+                <div id="edit-modal" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>Editar Perfil</h2>
+                            <button class="modal-close" onclick="closeEditModal()">&times;</button>
+                        </div>
+                        <form id="edit-profile-form">
+                            <div class="form-group">
+                                <label for="edit-nickname">Nickname</label>
+                                <input type="text" id="edit-nickname" required minlength="3" maxlength="20">
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-bio">Bio</label>
+                                <textarea id="edit-bio" rows="3" maxlength="200" placeholder="Conte um pouco sobre você..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-avatar">URL do Avatar</label>
+                                <input type="url" id="edit-avatar" placeholder="https://exemplo.com/sua-imagem.jpg">
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="btn btn-secondary btn-small" onclick="closeEditModal()">Cancelar</button>
+                                <button type="submit" class="btn btn-primary btn-small">Salvar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- User Posts -->
+                <div class="user-posts-section">
+                    <h2 class="section-subtitle">Minhas Publicações</h2>
+                    <div id="user-posts-container" class="user-posts-container">
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 RAZOR Team. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/feed.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        let currentUser = null;
+        let currentProfile = null;
+        
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await requireAuth();
+            if (!user) return;
+            
+            currentUser = user;
+            await loadProfile();
+        });
+        
+        // Carregar perfil
+        async function loadProfile() {
+            const loadingState = document.getElementById('loading-state');
+            const profileContent = document.getElementById('profile-content');
+            
+            const result = await getProfile(currentUser.id);
+            
+            if (result.success) {
+                currentProfile = result.profile;
+                
+                document.getElementById('profile-avatar').src = currentProfile.avatar_url || 'https://via.placeholder.com/120';
+                document.getElementById('profile-nickname').textContent = currentProfile.nickname || currentUser.email.split('@')[0];
+                document.getElementById('profile-email').textContent = currentUser.email;
+                document.getElementById('profile-bio').textContent = currentProfile.bio || 'Nenhuma bio definida';
+                
+                // Carregar estatísticas e posts
+                await loadUserStats();
+                await loadUserPosts();
+                
+                loadingState.style.display = 'none';
+                profileContent.style.display = 'block';
+            } else {
+                // Criar perfil se não existir
+                await createProfile(currentUser.id, currentUser.email.split('@')[0]);
+                await loadProfile();
+            }
+        }
+        
+        // Carregar estatísticas
+        async function loadUserStats() {
+            // Contar posts
+            const { count: postsCount } = await supabase
+                .from('posts')
+                .select('*', { count: 'exact', head: true })
+                .eq('user_id', currentUser.id);
+            
+            // Contar likes recebidos
+            const { data: userPosts } = await supabase
+                .from('posts')
+                .select('id')
+                .eq('user_id', currentUser.id);
+            
+            let likesCount = 0;
+            if (userPosts && userPosts.length > 0) {
+                const postIds = userPosts.map(p => p.id);
+                const { count } = await supabase
+                    .from('likes')
+                    .select('*', { count: 'exact', head: true })
+                    .in('post_id', postIds);
+                likesCount = count || 0;
+            }
+            
+            document.getElementById('posts-count').textContent = postsCount || 0;
+            document.getElementById('likes-count').textContent = likesCount;
+        }
+        
+        // Carregar posts do usuário
+        async function loadUserPosts() {
+            const container = document.getElementById('user-posts-container');
+            
+            const { data: posts, error } = await supabase
+                .from('posts')
+                .select(`
+                    *,
+                    profiles:user_id (nickname, avatar_url),
+                    likes (user_id)
+                `)
+                .eq('user_id', currentUser.id)
+                .order('created_at', { ascending: false });
+            
+            if (error) {
+                container.innerHTML = '<p class="error-text">Erro ao carregar posts</p>';
+                return;
+            }
+            
+            if (!posts || posts.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-posts">
+                        <p>Você ainda não publicou nada.</p>
+                        <a href="feed.html" class="btn btn-primary btn-small">Ir para o Feed</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = posts.map(post => renderPost(post, currentUser.id)).join('');
+        }
+        
+        // Edit Profile Modal
+        document.getElementById('edit-profile-btn').addEventListener('click', () => {
+            document.getElementById('edit-nickname').value = currentProfile.nickname || '';
+            document.getElementById('edit-bio').value = currentProfile.bio || '';
+            document.getElementById('edit-avatar').value = currentProfile.avatar_url || '';
+            document.getElementById('edit-modal').style.display = 'flex';
+        });
+        
+        function closeEditModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+        
+        // Salvar perfil
+        document.getElementById('edit-profile-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const updates = {
+                nickname: document.getElementById('edit-nickname').value.trim(),
+                bio: document.getElementById('edit-bio').value.trim(),
+                avatar_url: document.getElementById('edit-avatar').value.trim() || null
+            };
+            
+            const result = await updateProfile(currentUser.id, updates);
+            
+            if (result.success) {
+                closeEditModal();
+                await loadProfile();
+            } else {
+                alert('Erro ao atualizar perfil');
+            }
+        });
+        
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            if (confirm('Tem certeza que deseja sair?')) {
+                await logout();
+            }
+        });
+        
+        // Fechar modal ao clicar fora
+        document.getElementById('edit-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'edit-modal') {
+                closeEditModal();
+            }
+        });
+    </script>
+</body>
+</html>
